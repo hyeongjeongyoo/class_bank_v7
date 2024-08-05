@@ -11,6 +11,7 @@ public class MainController {
 	// 주소 설계
 	// http://localhost:8080/main-page
 	@GetMapping({"/main-page", "/index"})
+	// @ResponseBody
 	public String mainPage() {
 		System.out.println("mainPage() 호출 확인");
 		
