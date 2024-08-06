@@ -9,7 +9,7 @@
 	<insert id="insert">
 		<!-- 쿼리문이라 컬럼명과 반드시 같아야된다. -->
 		insert into user_tb(username, password, fullname, created_at)
-		values( #{username}, #{password}, #{fullname}, #{createdAt} )
+		values( #{username}, #{password}, #{fullname}, now())
 	</insert>
 	
 	<update id="updateById">
