@@ -9,14 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tenco.bank.dto.SignUpDTO;
 import com.tenco.bank.handler.exception.DataDeliveryException;
+import com.tenco.bank.repository.interfaces.UserRepository;
 import com.tenco.bank.service.UserService;
 
 @Controller // IoC의 대상 (싱글톤 패턴으로 관리됨)
 @RequestMapping("/user") // 대문 처리
 public class UserController {
 
-	@Autowired	// ID 처리
+//	@Autowired	// ID 처리
 	private UserService userService;
+	
+	@Autowired	// ID 처리
+	public UserController(UserService service) {
+		this.userService = service;
+	}
 	
 	/**
 	 * 회원 가입 페이지 요청
@@ -56,6 +62,7 @@ public class UserController {
 		}
 		
 		// 서비스 객체로 전달
+		
 		userService.createUser(dto);
 		
 		// TODO 추후 수정
