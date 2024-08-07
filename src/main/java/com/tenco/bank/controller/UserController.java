@@ -45,7 +45,7 @@ public class UserController {
 	 */
 	@PostMapping("/sign-up")
 	public String signUpProc(SignUpDTO dto) {
-		
+		System.out.println("test : " + dto.toString());
 		// controller 에서 일반적인 코드 작업
 		// 1. 인증검사 (여기서는 인증검사 볼 필요 없다
 		// 2. 유효성 검사
