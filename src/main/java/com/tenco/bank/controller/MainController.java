@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.tenco.bank.handler.exception.DataDeliveryException;
 import com.tenco.bank.handler.exception.RedirectException;
+import com.tenco.bank.utils.Define;
 
 @Controller	// IoC 대상(싱글톤 패턴 관리가 된다.) -> 제어의 역전
 public class MainController {
@@ -54,7 +55,7 @@ public class MainController {
 	@GetMapping("/error-test3")
 	public String errorData3() {
 		if(true) {
-			throw new DataDeliveryException("인증 안된 사용자 입니다.", HttpStatus.UNAUTHORIZED);
+			throw new DataDeliveryException(Define.NOT_AN_AUTHENTICATED_USER, HttpStatus.UNAUTHORIZED);
 		}
 		return "main";
 	}
