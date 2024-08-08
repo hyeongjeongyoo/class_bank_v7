@@ -17,7 +17,6 @@
 <body>
 	<div class="m--flex-container">
 		<div class="m--container">
-
 			<div class="jumbotron text-center m--banner-img" style="margin-bottom: 0">
 				<h1>My Bank</h1>
 				<p>마이바티스를 활용한 스프링 부트 앱 만들어보기</p>
