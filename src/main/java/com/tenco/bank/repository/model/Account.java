@@ -41,7 +41,7 @@ public class Account {
 	// 패스워드 체크
 	public void checkPassword(String password) {
 		
-		//                  f             ==    f  -> true
+		//                  f             ==   f  -> true
 		if(this.password.equals(password) == false) {
 			throw new DataDeliveryException(Define.FAIL_ACCOUNT_PASSWROD, HttpStatus.BAD_REQUEST);
 		}

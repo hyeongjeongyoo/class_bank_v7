@@ -24,9 +24,9 @@ public class MainController {
 		// [JSP 파일 찾기 (yml 설정)] - 뷰 리졸버
 		// prefix: /WEB-INF/view
 		// 		   /main
-		// suffix: .js
+		// suffix: .jsp
 		// return "/WEB-INF/view/main.jsp";
-		return "/main";
+		return "main";
 	}
 	
 	// todo - 삭제 예정
