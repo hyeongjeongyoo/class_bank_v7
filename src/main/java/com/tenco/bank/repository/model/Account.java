@@ -1,6 +1,7 @@
 package com.tenco.bank.repository.model;
 
 import java.security.Timestamp;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
@@ -68,5 +69,6 @@ public class Account extends ValueFormatter{
 		}
 		
 	}
+	
 	
 }

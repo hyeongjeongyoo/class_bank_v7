@@ -86,7 +86,7 @@ public class AccountController {
 		// 4. 서비스 호출
 		accountService.createAccount(dto, principal.getId());
 
-		return "redirect:/index";
+		return "redirect:/account/list";
 	}
 
 	/**
@@ -268,8 +268,12 @@ public class AccountController {
 	 * @return detail.jsp
 	 */
 	@GetMapping("/detail/{accountId}")
-	public String detail(@PathVariable (name = "accountId") Integer accountId, @RequestParam (required = false, name = "type") String type, Model model) {
-		
+	public String detail(@PathVariable (name = "accountId") Integer accountId, 
+			@RequestParam (required = false, name = "type")String type, 
+			@RequestParam (name = "page", defaultValue = "1") int page,
+			@RequestParam (name = "size", defaultValue = "2") int size,
+			Model model) {
+		System.out.println("11111111111111111");
 		// 1. 인증 검사
 		User principal = (User) session.getAttribute(Define.PRINCIPAL); // 다운 캐스팅
 		if (principal == null) {
@@ -282,14 +286,27 @@ public class AccountController {
 			throw new DataDeliveryException("유효하지 않은 접근입니다.", HttpStatus.BAD_REQUEST);
 		}
 		
+		// 페이지 갯수를 계산하기 위해서 총 페이지 수를 계산해줘야한다.
+		int totalRecords = accountService.countHistoryByAccountIdAndType(type, accountId);
+		int totalPages = (int)Math.ceil((double)totalRecords / size);
+		
 		Account account = accountService.readAccountById(accountId);
-		List<HistoryAccount> historyList = accountService.readHistoryByAccountId(type, accountId);
+		List<HistoryAccount> historyList = accountService.readHistoryByAccountId(type, accountId, page, size);
 		
 		model.addAttribute("account", account);
 		model.addAttribute("historyList", historyList);
 		
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("type", type);
+		model.addAttribute("size", size);
+		
+		System.out.println("11111111111111111");
 		return "account/detail";
 	}
+	
+	
+	
 
 	
 }
