@@ -3,6 +3,7 @@ package com.tenco.bank.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +14,17 @@ import com.tenco.bank.handler.exception.RedirectException;
 import com.tenco.bank.repository.interfaces.UserRepository;
 import com.tenco.bank.repository.model.User;
 
+import lombok.RequiredArgsConstructor;
+
 @Service	// IoC 대상 (싱글톤으로 관리)
+@RequiredArgsConstructor
 public class UserService {
 	
 	// DI - 의존 주입
 	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	@Autowired
+	private final PasswordEncoder passwordEncoder;
 	
 	/*	@Autowired 어노테이션으로 대체 가능하다.
 	 * 생성자 의존 주입 - DI
@@ -38,6 +44,12 @@ public class UserService {
 		int result = 0;
 
 		try {
+			// 코드 추가 부분
+			// 회원 가입 요청시 사용자가 던진 비밀번호 값을 암호화 처리해야 함
+			String hashPwd = passwordEncoder.encode(dto.getPassword());
+			System.out.println("hashPwd : " + hashPwd);
+			dto.setPassword(hashPwd);
+			
 			result = userRepository.insert(dto.toUser());			
 		} catch (DataAccessException e) {
 			throw new DataDeliveryException("중복 이름을 사용할 수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,8 +67,16 @@ public class UserService {
 		
 		// 유효성 검사는 Controller 에서 먼저 하자.
 		User userEntity = null;	// 지역 변수 선언
+		
+		// 기능 수정
+		// Username 으로만 select 처리
+		// 2가지의 경우의 수 -> 객체가 존재, null
+		
+		// 객체안에 사용자의 password 가 존재한다. (암호화 되어 있는 값)
+		// passwordEncoder 안에 matches 메서드를 사용해서 판별한다. "1234".equals(!@#$FDGE$#%&%^*);
+		
 		try {
-			userEntity = userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
+			userEntity = userRepository.findByUsername(dto.getUsername());
 		} catch (DataAccessException e) {
 			throw new DataDeliveryException("잘못된 처리 입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch(Exception e) {
@@ -64,7 +84,12 @@ public class UserService {
 		}
 		
 		if(userEntity == null){
-			throw new DataDeliveryException("아이디 혹은 비밀번호가 틀렸습니다", HttpStatus.BAD_REQUEST);
+			throw new DataDeliveryException("존재하지 않는 아이디입니다.", HttpStatus.BAD_REQUEST);
+		}
+		
+		boolean isPwdMathched = passwordEncoder.matches(dto.getPassword(), userEntity.getPassword());
+		if(isPwdMathched == false) {
+			throw new DataDeliveryException("비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST);
 		}
 		
 		return userEntity;

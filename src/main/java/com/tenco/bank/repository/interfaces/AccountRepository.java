@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.tenco.bank.repository.model.Account;
-import com.tenco.bank.repository.model.HistoryAccount;
 
 // AccountRepository 인터페이스와 account.xml 파일을 매칭 시킨다. 
 @Mapper
@@ -24,6 +23,6 @@ public interface AccountRepository {
 	public Account findByNumber(@Param("number") String id);
 	
 	// 코드 추가 예정
-	public Account findByAccountId(Integer account);
+	public Account findByAccountId(Integer accountId);
 	
 }

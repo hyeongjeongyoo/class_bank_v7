@@ -45,6 +45,7 @@
 	<div class="d-flex justify-content-center">
 		<ul class="pagination">
 			<!-- Previous Page Link -->
+			<!-- disabled : 비활성화된 상태를 시작적으로 표현 CSS -> 현재 페이지가 1이면 이전 버튼을 비활성화 -->
 			<li class="page-item <c:if test='${currentPage == 1}'>disabled</c:if>">
 				<a class="page-link" href="?type=${type}&page=${currentPage - 1}&size=${size}">Previous</a>
 			</li>

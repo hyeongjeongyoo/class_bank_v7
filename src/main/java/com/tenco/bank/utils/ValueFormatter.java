@@ -11,8 +11,9 @@ public abstract class ValueFormatter {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 		return sdf.format(timestamp);
 	}
-	
+
 	public String formatKoreanWon(Long amount) {
+		// 123456 -> 123,456 으로 표기하기 위함
 		DecimalFormat df = new DecimalFormat("#, ###");
 		String formatNumber = df.format(amount);
 		return formatNumber + " 원"; 

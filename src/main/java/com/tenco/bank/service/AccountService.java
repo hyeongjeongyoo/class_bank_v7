@@ -62,7 +62,7 @@ public class AccountService {
 
 	public List<Account> readAccountListByUserId(Integer userId) {
 		List<Account> accountListEntity = null;
-
+		
 		try {
 			accountListEntity = accountRepository.findByUserId(userId);
 		} catch (DataAccessException e) {
